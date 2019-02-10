@@ -1,7 +1,28 @@
 body {
+	display: flex;
+	justify-content: top;
+	flex-direction: column;
+	align-items: center;
+	background-color: rgb(113, 170, 179);
+}
 
+#teame {
+	margin-bottom: 4px;
+}
+
+#stats {
+	margin-bottom: 4px;
+}
+
+#retour {
+	margin-bottom: 4px;
 }
 
 ul {
-  list-style-type: none;
+	list-style-type: none;
+}
+
+.lis {
+	font-size: 25px;
+	margin-bottom: 4px;
 }

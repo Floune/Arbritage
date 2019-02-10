@@ -11,6 +11,6 @@ equipe.find({equipeName: team}, {_id: 0}, function(err, docs) {
 	if (err)
 		console.log(err);
 	for (let key in docs[0]) {
-		$("#stats").append("<li>" + key + ": " +docs[0][key] + "</li>");
+		$("#stats").append("<li class='lis'>" + key + ": " +docs[0][key] + "</li>");
 	}
 })

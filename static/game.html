@@ -10,38 +10,66 @@
 </head>
 <body>
 	
-	<div id="taymeur"></div>
-	<button class="startButton">start</button>
-	<button class="pauseButton">pause</button>
-	<button class="resetButton">reset</button>
-	<button id="undo">Annuler dernière action</button>
+	<div class="tmr">
+		<div id="taymeur"></div>
+		<div class="ctrls">
+			<div class="ui icon buttons">
+				<button class="ui button startButton">
+					<i class="play icon"></i>
+				</button>
+				<button class="ui button pauseButton">
+					<i class="pause icon"></i>
+				</button>
+				<button class="ui button resetButton">
+					<i class="fast backward icon"></i>
+				</button>
+			</div>
+			<button id="undo" class="ui button">
+				<i class="undo icon"></i>
+			</button>
+		</div>
+	</div>
 	
-	<h3>Accès zone d'attaque</h3> 
-	<button id="za-non">NON</button>
-	<div id="display-za-non"></div>
-	<button id="za-oui">OUI</button>
-	<div id="display-za-oui"></div>
+	<div class="za">
+		<h3>Accès zone d'attaque</h3> 
 
-	<br>
-	<h3>Situation de tir</h3>
-	<button id="st-non">Non Favorable</button>
-	<div id="display-st-non"></div>
-	<button id="st-oui">Favorable</button>
-	<div id="display-st-oui"></div>
+		<div class="ui buttons">
+			<button id="za-non" class="ui negative button">Non</button>
+			<div class="or" data-text="ou"></div>
+			<button id="za-oui" class="ui positive button">oui</button>
+		</div>
+	</div>
 
-	<br>
-	<h3>Panier marqué</h3>
-	<button id="pm-non">NON</button>
-	<div id="display-pm-non"></div>
-	<button id="pm-oui">OUI</button>
-	<div id="display-pm-oui"></div>
-	<br>
+	
+	<div class="st">
+		<h3>Situation de tir</h3>
 
-	<form action="./stats.html">
-		<button id="end">Fin du match</button>
-	</form>
-	<script
-	src="https://code.jquery.com/jquery-3.1.1.min.js"
+		<div class="ui buttons">
+			<button id="st-non" class="ui negative button">Non</button>
+			<div class="or" data-text="ou"></div>
+			<button id="st-oui" class="ui positive button">oui</button>
+		</div>
+	</div>
+
+	<div class="pm">
+
+		<h3>Panier marqué</h3>
+
+		<div class="ui buttons">
+			<button id="pm-non" class="ui negative button">Non</button>
+			<div class="or" data-text="ou"></div>
+			<button id="pm-oui" class="ui positive button">oui</button>
+		</div>
+
+	</div>
+
+	<div class="fin">
+		<form action="./stats.html">
+			<button class="ui blue large button" id="end">Fin du match</button>
+		</form>
+	</div>
+
+	<script	src="https://code.jquery.com/jquery-3.1.1.min.js"
 	integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
 	crossorigin="anonymous"></script>
 	<script src="./semantic/dist/semantic.min.js"></script>

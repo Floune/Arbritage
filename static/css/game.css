@@ -1,27 +1,42 @@
 body {
-	list-style-type: none;
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	align-items: center;
+	background-color: rgb(113, 170, 179);
+}
+
+#taymeur {
+	font-size: 30px;
+	margin-bottom: 10px;
+	border: 1px solid #e9edef;
+    padding: 9px;
 }
 
 .tmr {
-
-}
-
-.container {
-
+	margin-bottom: 10px;
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	align-items: center;
 }
 
 .za {
-	
+	margin-bottom: 10px;
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	align-items: center;
 }
 
 .st {
-
+	margin-bottom: 10px;
 }
 
 .pm {
-
+	margin-bottom: 10px;
 }
 
 .fin {
-
+	margin-bottom: 10px;
 }

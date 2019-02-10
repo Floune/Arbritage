@@ -21361,39 +21361,37 @@ let Game = {
 
 		$('#za-oui').on('click', function() {
 			Match.zoneAttaqueOuiUpdate(true);
-			Match.enAttaque = true;
-			$("#display-za-oui").text(Match.zoneAttaqueOui);
+			$("#za-oui").text("Oui : " + Match.zoneAttaqueOui);
 			lastActionHero.stat = 'zoneAttaqueOui';
 		});
 
 		$('#za-non').on('click', function() {
 			Match.zoneAttaqueNonUpdate(true);
-			Match.enAttaque = false;
-			$("#display-za-non").text(Match.zoneAttaqueNon);
+			$("#za-non").text("Non : " + Match.zoneAttaqueNon);
 			lastActionHero.stat = 'zoneAttaqueNon';
 		});
 
 		$('#st-oui').on('click', function() {
 			Match.situationTirFavUpdate(true);
-			$("#display-st-oui").text(Match.situationTirFav);
+			$("#st-oui").text("Oui : " + Match.situationTirFav);
 			lastActionHero.stat = 'situationTirFav';
 		});
 
 		$('#st-non').on('click', function() {
 			Match.situationTirDefavUpdate(true);
-			$("#display-st-non").text(Match.situationTirDefav);
+			$("#st-non").text("Non : " + Match.situationTirDefav);
 			lastActionHero.stat = 'situationTirDefav';
 		});
 
 		$('#pm-oui').on('click', function() {
 			Match.panierMarqueUpdate(true);
-			$("#display-pm-oui").text(Match.panierMarque);
+			$("#pm-oui").text("Oui : " + Match.panierMarque);
 			lastActionHero.stat = 'panierMarque';
 		});
 
 		$('#pm-non').on('click', function() {
 			Match.panierNonMarqueUpdate(true);
-			$("#display-pm-non").text(Match.panierNonMarque);
+			$("#pm-non").text("Non : " + Match.panierNonMarque);
 			lastActionHero.stat = 'panierNonMarque';
 		});
 
@@ -21418,27 +21416,27 @@ let Game = {
 			let field = lastActionHero.stat;
 			if (field == "zoneAttaqueOui") {
 				Match.zoneAttaqueOuiUpdate(false);
-				$("#display-za-oui").text(Match.zoneAttaqueOui);			
+				$("#za-oui").text("Oui : " + Match.zoneAttaqueOui);			
 			}
 			if (field == "zoneAttaqueNon") {
 				Match.zoneAttaqueNonUpdate(false);
-				$("#display-za-non").text(Match.zoneAttaqueNon);
+				$("#za-non").text("Non :" + Match.zoneAttaqueNon);
 			}
 			if (field == "situationTirDefav") {
 				Match.situationTirDefavUpdate(false);
-				$("#display-st-non").text(Match.situationTirDefav);
+				$("#st-non").text("Non :" + Match.situationTirDefav);
 			}
 			if (field == "situationTirFav") {
 				Match.situationTirFavUpdate(false);
-				$("#display-st-oui").text(Match.situationTirFav);
+				$("#st-oui").text("Oui : " + Match.situationTirFav);
 			}
 			if (field == "panierMarque") {
 				Match.panierMarqueUpdate(false);
-				$("#display-pm-oui").text(Match.panierMarque);
+				$("#pm-oui").text("Oui : " + Match.panierMarque);
 			}
 			if (field == "panierNonMarque") {
 				Match.panierNonMarqueUpdate(false);
-				$("#display-pm-non").text(Match.panierNonMarque);
+				$("#pm-non").text("Non :" + Match.panierNonMarque);
 			}
 			lastActionHero.stat = "";
 		});
@@ -21606,7 +21604,7 @@ equipe.find({equipeName: team}, {_id: 0}, function(err, docs) {
 	if (err)
 		console.log(err);
 	for (let key in docs[0]) {
-		$("#stats").append("<li>" + key + ": " +docs[0][key] + "</li>");
+		$("#stats").append("<li class='lis'>" + key + ": " +docs[0][key] + "</li>");
 	}
 })
 },{"jquery":14,"nedb":18}]},{},[27,26,28,29,30]);
