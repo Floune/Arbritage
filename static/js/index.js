@@ -1,6 +1,6 @@
 let $ = require('jquery');
 var Datastore = require('nedb')
-  , equipe = new Datastore({ filename: '../../db/equipe.db', autoload: true });
+, equipe = new Datastore({ filename: '../../db/equipe.db', autoload: true });
 
 $('#match').on('click', function() {
 	let name = $('#nom').val();
@@ -18,7 +18,6 @@ $('#match').on('click', function() {
 			console.log(err);
 		console.log('nouveau nom d\'équipe: ', doc.equipeName);
 	});
-
 });
 
 $("#historique").on('click', function() {
@@ -33,4 +32,4 @@ $("#historique").on('click', function() {
 			$("#histo").append("<br>");
 		}
 	})
-})
+});

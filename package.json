@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "easytimer.js": "^3.0.1",
     "express": "^4.16.4",
     "jquery": "^3.3.1",
     "nedb": "^1.8.0"

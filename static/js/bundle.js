@@ -3139,7 +3139,7 @@ AVLTree.prototype.delete = function (key, value) {
 // Interface
 module.exports = AVLTree;
 
-},{"./bst":11,"./customUtils":12,"underscore":24,"util":7}],11:[function(require,module,exports){
+},{"./bst":11,"./customUtils":12,"underscore":25,"util":7}],11:[function(require,module,exports){
 /**
  * Simple binary search tree
  */
@@ -3728,6 +3728,590 @@ function defaultCheckValueEquality (a, b) {
 module.exports.defaultCheckValueEquality = defaultCheckValueEquality;
 
 },{}],13:[function(require,module,exports){
+/**
+ * easytimer.js
+ * Generated: 2019-01-13
+ * Version: 3.0.1
+ */
+
+(function (global, factory) {
+  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
+  typeof define === 'function' && define.amd ? define(['exports'], factory) :
+  (factory((global.easytimer = {})));
+}(this, (function (exports) { 'use strict';
+
+  function _typeof(obj) {
+    if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+      _typeof = function (obj) {
+        return typeof obj;
+      };
+    } else {
+      _typeof = function (obj) {
+        return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+      };
+    }
+
+    return _typeof(obj);
+  }
+
+  function leftPadding(string, padLength, character) {
+    var i;
+    var characters = '';
+
+    if (string.length > padLength) {
+      return string;
+    }
+
+    for (i = 0; i < padLength; i = i + 1) {
+      characters += String(character);
+    }
+
+    return (characters + string).slice(-characters.length);
+  }
+
+  function TimeCounter() {
+    this.secondTenths = 0;
+    this.seconds = 0;
+    this.minutes = 0;
+    this.hours = 0;
+    this.days = 0;
+    /**
+     * [toString convert the counted values on a string]
+     * @param  {[array]} units           [array with the units to display]
+     * @param  {[string]} separator       [separator of the units]
+     * @param  {[integer]} leftZeroPadding [number of zero padding]
+     * @return {[string]}                 [result string]
+     */
+
+    this.toString = function (units, separator, leftZeroPadding) {
+      units = units || ['hours', 'minutes', 'seconds'];
+      separator = separator || ':';
+      leftZeroPadding = leftZeroPadding || 2;
+      var stringTime;
+      var arrayTime = [];
+      var i;
+
+      for (i = 0; i < units.length; i = i + 1) {
+        if (this[units[i]] !== undefined) {
+          if (units[i] === 'secondTenths') {
+            arrayTime.push(this[units[i]]);
+          } else {
+            arrayTime.push(leftPadding(this[units[i]], leftZeroPadding, '0'));
+          }
+        }
+      }
+
+      stringTime = arrayTime.join(separator);
+      return stringTime;
+    };
+  }
+
+  /*
+  * Polyfill por IE9, IE10 and IE11
+  */
+  var CustomEvent$1 = typeof window !== 'undefined' ? window.CustomEvent : undefined;
+
+  if (typeof window !== 'undefined' && typeof CustomEvent$1 !== 'function') {
+    CustomEvent$1 = function CustomEvent(event, params) {
+      params = params || {
+        bubbles: false,
+        cancelable: false,
+        detail: undefined
+      };
+      var evt = document.createEvent('CustomEvent');
+      evt.initCustomEvent(event, params.bubbles, params.cancelable, params.detail);
+      return evt;
+    };
+
+    CustomEvent$1.prototype = window.Event.prototype;
+    window.CustomEvent = CustomEvent$1;
+  }
+
+  /*
+   * General functions, variables and constants
+   */
+
+  var SECOND_TENTHS_PER_SECOND = 10;
+  var SECONDS_PER_MINUTE = 60;
+  var MINUTES_PER_HOUR = 60;
+  var HOURS_PER_DAY = 24;
+  var SECOND_TENTHS_POSITION = 0;
+  var SECONDS_POSITION = 1;
+  var MINUTES_POSITION = 2;
+  var HOURS_POSITION = 3;
+  var DAYS_POSITION = 4;
+  var SECOND_TENTHS = 'secondTenths';
+  var SECONDS = 'seconds';
+  var MINUTES = 'minutes';
+  var HOURS = 'hours';
+  var DAYS = 'days';
+  var unitsInMilliseconds = {
+    secondTenths: 100,
+    seconds: 1000,
+    minutes: 60000,
+    hours: 3600000,
+    days: 86400000
+  };
+  var groupedUnits = {
+    secondTenths: SECOND_TENTHS_PER_SECOND,
+    seconds: SECONDS_PER_MINUTE,
+    minutes: MINUTES_PER_HOUR,
+    hours: HOURS_PER_DAY
+  };
+  var events = typeof module !== 'undefined' && module.exports && typeof require === 'function' ? require('events') : undefined;
+
+  function hasDOM() {
+    return typeof document !== 'undefined';
+  }
+
+  function hasEventEmitter() {
+    return events;
+  }
+
+  function mod(number, module) {
+    return (number % module + module) % module;
+  }
+  /**
+   * [Timer Timer/Chronometer/Countdown compatible with AMD and NodeJS.
+   * Can update time values with different time intervals: tenth of seconds,
+   * seconds, minutes and hours.]
+   */
+
+
+  function Timer() {
+    /*
+    * PRIVATE variables and Functions
+    */
+    var counters = new TimeCounter();
+    var totalCounters = new TimeCounter();
+    var intervalId;
+    var eventEmitter = hasDOM() ? document.createElement('span') : hasEventEmitter() ? new events.EventEmitter() : undefined;
+    var running = false;
+    var paused = false;
+    var precision;
+    var timerTypeFactor;
+    var customCallback;
+    var timerConfig = {};
+    var currentParams;
+    var targetValues;
+    var startValues;
+    var countdown;
+    var startingDate;
+    var targetDate;
+    var eventData = {
+      detail: {
+        timer: this
+      }
+    };
+
+    function updateCounters(precision, roundedValue) {
+      totalCounters[precision] = roundedValue;
+
+      if (precision === DAYS) {
+        counters[precision] = roundedValue;
+      } else if (roundedValue >= 0) {
+        counters[precision] = mod(roundedValue, groupedUnits[precision]);
+      } else {
+        counters[precision] = groupedUnits[precision] - mod(roundedValue, groupedUnits[precision]);
+      }
+    }
+
+    function updateDays(value) {
+      return updateUnitByPrecision(value, DAYS);
+    }
+
+    function updateHours(value) {
+      return updateUnitByPrecision(value, HOURS);
+    }
+
+    function updateMinutes(value) {
+      return updateUnitByPrecision(value, MINUTES);
+    }
+
+    function updateSeconds(value) {
+      return updateUnitByPrecision(value, SECONDS);
+    }
+
+    function updateSecondTenths(value) {
+      return updateUnitByPrecision(value, SECOND_TENTHS);
+    }
+
+    function updateUnitByPrecision(value, precision) {
+      var previousValue = totalCounters[precision];
+      updateCounters(precision, calculateIntegerUnitQuotient(value, unitsInMilliseconds[precision]));
+      return totalCounters[precision] !== previousValue;
+    }
+
+    function stopTimerAndResetCounters() {
+      stopTimer();
+      resetCounters();
+    }
+
+    function stopTimer() {
+      clearInterval(intervalId);
+      intervalId = undefined;
+      running = false;
+      paused = false;
+    }
+
+    function setParamsAndStartTimer(params) {
+      if (!isPaused()) {
+        setParams(params);
+      } else {
+        startingDate = calculateStartingDate();
+        targetValues = setTarget(currentParams.target);
+      }
+
+      startTimer();
+    }
+
+    function startTimer() {
+      var interval = unitsInMilliseconds[precision];
+
+      if (isTargetAchieved(roundTimestamp(Date.now()))) {
+        return;
+      }
+
+      intervalId = setInterval(updateTimerAndDispatchEvents, interval);
+      running = true;
+      paused = false;
+    }
+
+    function calculateStartingDate() {
+      return roundTimestamp(Date.now()) - totalCounters.secondTenths * unitsInMilliseconds[SECOND_TENTHS] * timerTypeFactor;
+    }
+
+    function updateTimerAndDispatchEvents() {
+      var currentTime = roundTimestamp(Date.now());
+      var valuesUpdated = updateTimer();
+      dispatchEvents(valuesUpdated);
+      customCallback(eventData.detail.timer);
+
+      if (isTargetAchieved(currentTime)) {
+        stop();
+        dispatchEvent('targetAchieved', eventData);
+      }
+    }
+
+    function updateTimer() {
+      var currentTime = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : roundTimestamp(Date.now());
+      var ellapsedTime = timerTypeFactor > 0 ? currentTime - startingDate : startingDate - currentTime;
+      var valuesUpdated = {};
+      valuesUpdated[SECOND_TENTHS] = updateSecondTenths(ellapsedTime);
+      valuesUpdated[SECONDS] = updateSeconds(ellapsedTime);
+      valuesUpdated[MINUTES] = updateMinutes(ellapsedTime);
+      valuesUpdated[HOURS] = updateHours(ellapsedTime);
+      valuesUpdated[DAYS] = updateDays(ellapsedTime);
+      return valuesUpdated;
+    }
+
+    function roundTimestamp(timestamp) {
+      return Math.floor(timestamp / unitsInMilliseconds[precision]) * unitsInMilliseconds[precision];
+    }
+
+    function dispatchEvents(valuesUpdated) {
+      if (valuesUpdated[SECOND_TENTHS]) {
+        dispatchEvent('secondTenthsUpdated', eventData);
+      }
+
+      if (valuesUpdated[SECONDS]) {
+        dispatchEvent('secondsUpdated', eventData);
+      }
+
+      if (valuesUpdated[MINUTES]) {
+        dispatchEvent('minutesUpdated', eventData);
+      }
+
+      if (valuesUpdated[HOURS]) {
+        dispatchEvent('hoursUpdated', eventData);
+      }
+
+      if (valuesUpdated[DAYS]) {
+        dispatchEvent('daysUpdated', eventData);
+      }
+    }
+
+    function isTargetAchieved(currentDate) {
+      return targetValues instanceof Array && currentDate >= targetDate;
+    }
+
+    function resetCounters() {
+      for (var counter in counters) {
+        if (counters.hasOwnProperty(counter) && typeof counters[counter] === 'number') {
+          counters[counter] = 0;
+        }
+      }
+
+      for (var _counter in totalCounters) {
+        if (totalCounters.hasOwnProperty(_counter) && typeof totalCounters[_counter] === 'number') {
+          totalCounters[_counter] = 0;
+        }
+      }
+    }
+
+    function setParams(params) {
+      params = params || {};
+      precision = typeof params.precision === 'string' ? params.precision : SECONDS;
+      customCallback = typeof params.callback === 'function' ? params.callback : function () {};
+      countdown = params.countdown === true;
+      timerTypeFactor = countdown === true ? -1 : 1;
+
+      if (_typeof(params.startValues) === 'object') {
+        setStartValues(params.startValues);
+      } else {
+        startValues = null;
+      }
+
+      startingDate = calculateStartingDate();
+      updateTimer();
+
+      if (_typeof(params.target) === 'object') {
+        targetValues = setTarget(params.target);
+      } else if (countdown) {
+        params.target = {
+          seconds: 0
+        };
+        targetValues = setTarget(params.target);
+      } else {
+        targetValues = null;
+      }
+
+      timerConfig = {
+        precision: precision,
+        callback: customCallback,
+        countdown: _typeof(params) === 'object' && params.countdown === true,
+        target: targetValues,
+        startValues: startValues
+      };
+      currentParams = params;
+    }
+
+    function configInputValues(inputValues) {
+      var secondTenths, seconds, minutes, hours, days, values;
+
+      if (_typeof(inputValues) === 'object') {
+        if (inputValues instanceof Array) {
+          if (inputValues.length !== 5) {
+            throw new Error('Array size not valid');
+          }
+
+          values = inputValues;
+        } else {
+          values = [inputValues.secondTenths || 0, inputValues.seconds || 0, inputValues.minutes || 0, inputValues.hours || 0, inputValues.days || 0];
+        }
+      }
+
+      secondTenths = values[SECOND_TENTHS_POSITION];
+      seconds = values[SECONDS_POSITION] + calculateIntegerUnitQuotient(secondTenths, SECOND_TENTHS_PER_SECOND);
+      minutes = values[MINUTES_POSITION] + calculateIntegerUnitQuotient(seconds, SECONDS_PER_MINUTE);
+      hours = values[HOURS_POSITION] + calculateIntegerUnitQuotient(minutes, MINUTES_PER_HOUR);
+      days = values[DAYS_POSITION] + calculateIntegerUnitQuotient(hours, HOURS_PER_DAY);
+      values[SECOND_TENTHS_POSITION] = secondTenths % SECOND_TENTHS_PER_SECOND;
+      values[SECONDS_POSITION] = seconds % SECONDS_PER_MINUTE;
+      values[MINUTES_POSITION] = minutes % MINUTES_PER_HOUR;
+      values[HOURS_POSITION] = hours % HOURS_PER_DAY;
+      values[DAYS_POSITION] = days;
+      return values;
+    }
+
+    function calculateIntegerUnitQuotient(unit, divisor) {
+      var quotient = unit / divisor;
+      return quotient < 0 ? Math.ceil(quotient) : Math.floor(quotient);
+    }
+
+    function setTarget(inputTarget) {
+      if (!inputTarget) {
+        return;
+      }
+
+      targetValues = configInputValues(inputTarget);
+      var targetCounter = calculateTotalCounterFromValues(targetValues);
+      targetDate = startingDate + targetCounter.secondTenths * unitsInMilliseconds[SECOND_TENTHS] * timerTypeFactor;
+      return targetValues;
+    }
+
+    function setStartValues(inputStartValues) {
+      startValues = configInputValues(inputStartValues);
+      counters.secondTenths = startValues[SECOND_TENTHS_POSITION];
+      counters.seconds = startValues[SECONDS_POSITION];
+      counters.minutes = startValues[MINUTES_POSITION];
+      counters.hours = startValues[HOURS_POSITION];
+      counters.days = startValues[DAYS_POSITION];
+      totalCounters = calculateTotalCounterFromValues(startValues, totalCounters);
+    }
+
+    function calculateTotalCounterFromValues(values, outputCounter) {
+      var total = outputCounter || {};
+      total.days = values[DAYS_POSITION];
+      total.hours = total.days * HOURS_PER_DAY + values[HOURS_POSITION];
+      total.minutes = total.hours * MINUTES_PER_HOUR + values[MINUTES_POSITION];
+      total.seconds = total.minutes * SECONDS_PER_MINUTE + values[SECONDS_POSITION];
+      total.secondTenths = total.seconds * SECOND_TENTHS_PER_SECOND + values[[SECOND_TENTHS_POSITION]];
+      return total;
+    }
+    /*
+     * PUBLIC functions
+     */
+
+    /**
+     * [stop stops the timer and resets the counters. Dispatch stopped event]
+     */
+
+
+    function stop() {
+      stopTimerAndResetCounters();
+      dispatchEvent('stopped', eventData);
+    }
+    /**
+     * [stop stops and starts the timer. Dispatch stopped event]
+     */
+
+
+    function reset() {
+      stopTimerAndResetCounters();
+      setParamsAndStartTimer(currentParams);
+      dispatchEvent('reset', eventData);
+    }
+    /**
+     * [start starts the timer configured by the params object. Dispatch started event]
+     * @param  {[object]} params [Configuration parameters]
+     */
+
+
+    function start(params) {
+      if (isRunning()) {
+        return;
+      }
+
+      setParamsAndStartTimer(params);
+      dispatchEvent('started', eventData);
+    }
+    /**
+     * [pause stops the timer without resetting the counters. The timer it can be restarted with start function.
+     * Dispatch paused event]
+     * @return {[type]} [description]
+     */
+
+
+    function pause() {
+      stopTimer();
+      paused = true;
+      dispatchEvent('paused', eventData);
+    }
+    /**
+     * [addEventListener Adds event listener to the timer]
+     * @param {[string]} event      [event to listen]
+     * @param {[function]} listener   [the event listener function]
+     */
+
+
+    function addEventListener(event, listener) {
+      if (hasDOM()) {
+        eventEmitter.addEventListener(event, listener);
+      } else if (hasEventEmitter()) {
+        eventEmitter.on(event, listener);
+      }
+    }
+    /**
+     * [removeEventListener Removes event listener to the timer]
+     * @param  {[string]} event    [event to remove listener]
+     * @param  {[function]} listener [listener to remove]
+     */
+
+
+    function removeEventListener(event, listener) {
+      if (hasDOM()) {
+        eventEmitter.removeEventListener(event, listener);
+      } else if (hasEventEmitter()) {
+        eventEmitter.removeListener(event, listener);
+      }
+    }
+    /**
+     * [dispatchEvent dispatchs an event]
+     * @param  {string} event [event to dispatch]
+     */
+
+
+    function dispatchEvent(event, data) {
+      if (hasDOM()) {
+        eventEmitter.dispatchEvent(new CustomEvent(event, data));
+      } else if (hasEventEmitter()) {
+        eventEmitter.emit(event, data);
+      }
+    }
+    /**
+     * [isRunning return true if the timer is running]
+     * @return {Boolean}
+     */
+
+
+    function isRunning() {
+      return running;
+    }
+    /**
+     * [isPaused returns true if the timer is paused]
+     * @return {Boolean}
+     */
+
+
+    function isPaused() {
+      return paused;
+    }
+    /**
+     * [getTimeValues returns the counter with the current timer values]
+     * @return {[TimeCounter]}
+     */
+
+
+    function getTimeValues() {
+      return counters;
+    }
+    /**
+     * [getTotalTimeValues returns the counter with the current timer total values]
+     * @return {[TimeCounter]}
+     */
+
+    function getTotalTimeValues() {
+      return totalCounters;
+    }
+    /**
+     * [getConfig returns the configuration paramameters]
+     * @return {[type]}
+     */
+
+    function getConfig() {
+      return timerConfig;
+    }
+    /**
+     * Public API
+     * Definition of Timer instance public functions
+     */
+
+    if (typeof this !== 'undefined') {
+      this.start = start;
+      this.pause = pause;
+      this.stop = stop;
+      this.reset = reset;
+      this.isRunning = isRunning;
+      this.isPaused = isPaused;
+      this.getTimeValues = getTimeValues;
+      this.getTotalTimeValues = getTotalTimeValues;
+      this.getConfig = getConfig;
+      this.addEventListener = addEventListener;
+      this.on = addEventListener;
+      this.removeEventListener = removeEventListener;
+      this.off = removeEventListener;
+    }
+  }
+
+  exports.default = Timer;
+  exports.Timer = Timer;
+
+  Object.defineProperty(exports, '__esModule', { value: true });
+
+})));
+
+},{"events":1}],14:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v3.3.1
  * https://jquery.com/
@@ -14093,7 +14677,7 @@ if ( !noGlobal ) {
 return jQuery;
 } );
 
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 (function (global){
 /*!
     localForage -- Offline Storage, Improved
@@ -16894,7 +17478,7 @@ module.exports = localforage_js;
 });
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 /**
  * Specific customUtils for the browser, where we don't have access to the Crypto and Buffer modules
  */
@@ -16974,7 +17558,7 @@ function uid (len) {
 
 module.exports.uid = uid;
 
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 /**
  * Way data is stored for this database
  * For a Node.js/Node Webkit database it's the file system
@@ -17071,12 +17655,12 @@ module.exports.mkdirp = mkdirp;
 module.exports.ensureDatafileIntegrity = ensureDatafileIntegrity;
 
 
-},{"localforage":14}],17:[function(require,module,exports){
+},{"localforage":15}],18:[function(require,module,exports){
 var Datastore = require('./lib/datastore');
 
 module.exports = Datastore;
 
-},{"./lib/datastore":19}],18:[function(require,module,exports){
+},{"./lib/datastore":20}],19:[function(require,module,exports){
 /**
  * Manage access to data, be it to find, update or remove it
  */
@@ -17282,7 +17866,7 @@ Cursor.prototype.exec = function () {
 // Interface
 module.exports = Cursor;
 
-},{"./model":22,"underscore":24}],19:[function(require,module,exports){
+},{"./model":23,"underscore":25}],20:[function(require,module,exports){
 var customUtils = require('./customUtils')
   , model = require('./model')
   , async = require('async')
@@ -17988,7 +18572,7 @@ Datastore.prototype.remove = function () {
 
 module.exports = Datastore;
 
-},{"./cursor":18,"./customUtils":15,"./executor":20,"./indexes":21,"./model":22,"./persistence":23,"async":8,"events":1,"underscore":24,"util":7}],20:[function(require,module,exports){
+},{"./cursor":19,"./customUtils":16,"./executor":21,"./indexes":22,"./model":23,"./persistence":24,"async":8,"events":1,"underscore":25,"util":7}],21:[function(require,module,exports){
 (function (process,setImmediate){
 /**
  * Responsible for sequentially executing actions on the database
@@ -18070,7 +18654,7 @@ Executor.prototype.processBuffer = function () {
 module.exports = Executor;
 
 }).call(this,require('_process'),require("timers").setImmediate)
-},{"_process":4,"async":8,"timers":5}],21:[function(require,module,exports){
+},{"_process":4,"async":8,"timers":5}],22:[function(require,module,exports){
 var BinarySearchTree = require('binary-search-tree').AVLTree
   , model = require('./model')
   , _ = require('underscore')
@@ -18366,7 +18950,7 @@ Index.prototype.getAll = function () {
 // Interface
 module.exports = Index;
 
-},{"./model":22,"binary-search-tree":9,"underscore":24,"util":7}],22:[function(require,module,exports){
+},{"./model":23,"binary-search-tree":9,"underscore":25,"util":7}],23:[function(require,module,exports){
 /**
  * Handle models (i.e. docs)
  * Serialization/deserialization
@@ -19203,7 +19787,7 @@ module.exports.match = match;
 module.exports.areThingsEqual = areThingsEqual;
 module.exports.compareThings = compareThings;
 
-},{"underscore":24,"util":7}],23:[function(require,module,exports){
+},{"underscore":25,"util":7}],24:[function(require,module,exports){
 (function (process){
 /**
  * Handle every persistence-related task
@@ -19521,7 +20105,7 @@ Persistence.prototype.loadDatabase = function (cb) {
 module.exports = Persistence;
 
 }).call(this,require('_process'))
-},{"./customUtils":15,"./indexes":21,"./model":22,"./storage":16,"_process":4,"async":8,"path":3}],24:[function(require,module,exports){
+},{"./customUtils":16,"./indexes":22,"./model":23,"./storage":17,"_process":4,"async":8,"path":3}],25:[function(require,module,exports){
 //     Underscore.js 1.4.4
 //     http://underscorejs.org
 //     (c) 2009-2013 Jeremy Ashkenas, DocumentCloud Inc.
@@ -20749,18 +21333,28 @@ module.exports = Persistence;
 
 }).call(this);
 
-},{}],25:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 let $ = require('jquery');
 let Match = require('./match');
 let enAttaque = false;
 var Datastore = require('nedb')
 , equipe = new Datastore({ filename: '../../db/equipe.db', autoload: true });
 let lastActionHero = {stat: ''};
+let Timer = require('easytimer.js').Timer;
+let timer = new Timer();
 
 let Game = {
 
 	init: function() {
 		this.watchers();
+		this.timer();
+	},
+
+	timer: function() {
+		timer.start();
+		timer.addEventListener('secondsUpdated', function (e) {
+			$('#taymeur').html(timer.getTimeValues().toString());
+		});
 	},
 
 	watchers: function() {
@@ -20853,19 +21447,41 @@ let Game = {
 				if (err)
 					console.log(err)
 				console.log('removed: ', numRemoved);
+				location.reload(true);
 			});
 			$("#histo").empty();
-			location.reload(true);
+		});
+
+		$('.startButton').click(function () {
+			timer.start();
+		});
+		$('.pauseButton').click(function () {
+			timer.pause();
+		});
+		$('.stopButton').click(function () {
+			timer.stop();
+		});
+		$('.resetButton').click(function () {
+			timer.reset();
+		});
+		timer.addEventListener('secondsUpdated', function (e) {
+			$('#taymeur').html(timer.getTimeValues().toString());
+		});
+		timer.addEventListener('started', function (e) {
+			$('#taymeur').html(timer.getTimeValues().toString());
+		});
+		timer.addEventListener('reset', function (e) {
+			$('#taymeur').html(timer.getTimeValues().toString());
 		});
 
 	}
 };
 
 module.exports = Game;
-},{"./match":27,"jquery":13,"nedb":17}],26:[function(require,module,exports){
+},{"./match":28,"easytimer.js":13,"jquery":14,"nedb":18}],27:[function(require,module,exports){
 let $ = require('jquery');
 var Datastore = require('nedb')
-  , equipe = new Datastore({ filename: '../../db/equipe.db', autoload: true });
+, equipe = new Datastore({ filename: '../../db/equipe.db', autoload: true });
 
 $('#match').on('click', function() {
 	let name = $('#nom').val();
@@ -20883,7 +21499,6 @@ $('#match').on('click', function() {
 			console.log(err);
 		console.log('nouveau nom d\'équipe: ', doc.equipeName);
 	});
-
 });
 
 $("#historique").on('click', function() {
@@ -20898,8 +21513,9 @@ $("#historique").on('click', function() {
 			$("#histo").append("<br>");
 		}
 	})
-})
-},{"jquery":13,"nedb":17}],27:[function(require,module,exports){
+});
+
+},{"jquery":14,"nedb":18}],28:[function(require,module,exports){
 let Match = {
 	equipe: 'equipe',
 	zoneAttaqueOui: 0,
@@ -20961,7 +21577,7 @@ let Match = {
 };
 
 module.exports = Object.create(Match);
-},{}],28:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 // This file is required by the index.html file and will
 // be executed in the renderer process for that window.
 // All of the Node.js APIs are available in this process.
@@ -20972,7 +21588,7 @@ function main() {
 };
 
 main();
-},{"./game":25}],29:[function(require,module,exports){
+},{"./game":26}],30:[function(require,module,exports){
 let $ = require('jquery');
 var Datastore = require('nedb')
   , equipe = new Datastore({ filename: '../../db/equipe.db', autoload: true });
@@ -20987,4 +21603,4 @@ equipe.find({equipeName: team}, function(err, docs) {
 		$("#stats").append("<li>" + key + ": " +docs[0][key] + "</li>");
 	}
 })
-},{"jquery":13,"nedb":17}]},{},[26,25,27,28,29]);
+},{"jquery":14,"nedb":18}]},{},[27,26,28,29,30]);

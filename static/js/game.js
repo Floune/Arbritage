@@ -4,11 +4,21 @@ let enAttaque = false;
 var Datastore = require('nedb')
 , equipe = new Datastore({ filename: '../../db/equipe.db', autoload: true });
 let lastActionHero = {stat: ''};
+let Timer = require('easytimer.js').Timer;
+let timer = new Timer();
 
 let Game = {
 
 	init: function() {
 		this.watchers();
+		this.timer();
+	},
+
+	timer: function() {
+		timer.start();
+		timer.addEventListener('secondsUpdated', function (e) {
+			$('#taymeur').html(timer.getTimeValues().toString());
+		});
 	},
 
 	watchers: function() {
@@ -101,9 +111,31 @@ let Game = {
 				if (err)
 					console.log(err)
 				console.log('removed: ', numRemoved);
+				location.reload(true);
 			});
 			$("#histo").empty();
-			location.reload(true);
+		});
+
+		$('.startButton').click(function () {
+			timer.start();
+		});
+		$('.pauseButton').click(function () {
+			timer.pause();
+		});
+		$('.stopButton').click(function () {
+			timer.stop();
+		});
+		$('.resetButton').click(function () {
+			timer.reset();
+		});
+		timer.addEventListener('secondsUpdated', function (e) {
+			$('#taymeur').html(timer.getTimeValues().toString());
+		});
+		timer.addEventListener('started', function (e) {
+			$('#taymeur').html(timer.getTimeValues().toString());
+		});
+		timer.addEventListener('reset', function (e) {
+			$('#taymeur').html(timer.getTimeValues().toString());
 		});
 
 	}
