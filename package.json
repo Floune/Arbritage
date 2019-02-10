@@ -1,0 +1,19 @@
+{
+  "name": "basket",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.4",
+    "jquery": "^3.3.1",
+    "nedb": "^1.8.0"
+  },
+  "devDependencies": {
+    "watchify": "^3.11.0"
+  }
+}
