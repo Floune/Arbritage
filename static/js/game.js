@@ -69,7 +69,8 @@ let Game = {
 				situationTirDefav: Match.situationTirDefav,
 				situationTirFav: Match.situationTirFav,
 				panierMarque: Match.panierMarque,
-				panierNonMarque: Match.panierNonMarque
+				panierNonMarque: Match.panierNonMarque,
+				temps: timer.getTimeValues().toString(),
 			}}, {multi: true}, function(err, numReplaced) {
 				if (err)
 					console.log(err);

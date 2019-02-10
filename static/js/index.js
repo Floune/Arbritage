@@ -12,7 +12,8 @@ $('#match').on('click', function() {
 		situationTirDefav: 0,
 		situationTirFav: 0,
 		panierNonMarque: 0,
-		panierMarque: 0
+		panierMarque: 0,
+		temps: 0
 	}, function(err, doc) {
 		if (err)
 			console.log(err);

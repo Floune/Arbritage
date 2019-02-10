@@ -21405,7 +21405,8 @@ let Game = {
 				situationTirDefav: Match.situationTirDefav,
 				situationTirFav: Match.situationTirFav,
 				panierMarque: Match.panierMarque,
-				panierNonMarque: Match.panierNonMarque
+				panierNonMarque: Match.panierNonMarque,
+				temps: timer.getTimeValues().toString(),
 			}}, {multi: true}, function(err, numReplaced) {
 				if (err)
 					console.log(err);
@@ -21493,7 +21494,8 @@ $('#match').on('click', function() {
 		situationTirDefav: 0,
 		situationTirFav: 0,
 		panierNonMarque: 0,
-		panierMarque: 0
+		panierMarque: 0,
+		temps: 0
 	}, function(err, doc) {
 		if (err)
 			console.log(err);
