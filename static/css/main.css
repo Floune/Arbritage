@@ -1,3 +1,40 @@
 body {
-	background: white;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: rgb(113, 170, 179);
+}
+
+.container {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	overflow: auto;
+	
+}
+
+.title h1 {
+	font-size: 4rem;
+	margin-bottom: 10px;
+}
+
+.input {
+	margin-bottom: 10px;
+}
+
+.begin {
+	margin-bottom: 20px;
+}
+
+.call_to_action {
+	margin-bottom: 10px;
+}
+
+.boutons {
+	margin-bottom: 10px;
+}
+
+.historique {
+	margin-bottom: 10px;
 }

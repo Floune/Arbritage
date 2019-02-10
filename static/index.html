@@ -2,26 +2,49 @@
 <html>
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Basket</title>
+  <link rel="icon" href="favicon.ico" />
+  <link rel="stylesheet" type="text/css" href="./semantic/dist/semantic.min.css">
   <link rel="stylesheet" type="text/css" href="./css/main.css">
 </head>
 <body>
 
-  <h1>Le basket</h1>
-  <label for="nom">Nom de l'équipe</label>
-  <input type="text" id="nom" name="nom">
-  <br>
-  <br>
-  <form action="./game.html">
-    <input type="submit" value="Commencer le match" id="match"/>
-  </form>
-  <br>
-  <button id="historique">historique</button>
-  <button id="videstorique">vider l'historique ;)</button>
-  <button id="quitter">Quitter</button>
-  <ul id="histo">
+  <div class="container">
 
-  </ul>
+    <div class="title">
+      <h1>Le basket</h1>
+    </div>
+
+    <div class="input">
+      <div class="ui massive inverted input" id="nom" name="nom">
+        <input type="text" placeholder="Nom d'équipe">
+      </div>
+    </div>
+
+    <div class="begin">
+      <form action="./game.html">  
+        <button class="ui teal massive button" id="match">
+          Commencer le match
+        </button>
+      </form>
+    </div>
+
+    <div class="boutons">
+      <button class="ui blue large button" id="historique">Voir historique</button>
+      <button class="ui violet large button" id="videstorique">Vider l'historique ;)</button>
+      <!-- <button id="quitter">Quitter</button> -->
+    </div>
+
+      <ul id="histo"></ul>
+
+  </div>
+  <script
+    src="https://code.jquery.com/jquery-3.1.1.min.js"
+    integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+    crossorigin="anonymous">
+  </script>
+  <script src="./semantic/dist/semantic.min.js"></script>
   <script src="js/bundle.js"></script>
 </body>
 </html>

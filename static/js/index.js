@@ -23,7 +23,8 @@ $('#match').on('click', function() {
 
 $("#historique").on('click', function() {
 	$("#histo").empty();
-	equipe.find({}, function(err, docs) {
+
+	equipe.find({}, {_id: 0}, function(err, docs) {
 		if (err)
 			console.log(err);
 		for (let doc in docs) {
@@ -32,5 +33,6 @@ $("#historique").on('click', function() {
 			}
 			$("#histo").append("<br>");
 		}
-	})
+	});
+
 });

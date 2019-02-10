@@ -2,14 +2,20 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Jeu</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Basket</title>
+	<link rel="icon" href="favicon.ico" />
+	<link rel="stylesheet" type="text/css" href="./semantic/dist/semantic.min.css">
+	<link rel="stylesheet" type="text/css" href="./css/game.css">
 </head>
 <body>
+	
 	<div id="taymeur"></div>
 	<button class="startButton">start</button>
 	<button class="pauseButton">pause</button>
 	<button class="resetButton">reset</button>
 	<button id="undo">Annuler dernière action</button>
+	
 	<h3>Accès zone d'attaque</h3> 
 	<button id="za-non">NON</button>
 	<div id="display-za-non"></div>
@@ -34,6 +40,11 @@
 	<form action="./stats.html">
 		<button id="end">Fin du match</button>
 	</form>
+	<script
+	src="https://code.jquery.com/jquery-3.1.1.min.js"
+	integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+	crossorigin="anonymous"></script>
+	<script src="./semantic/dist/semantic.min.js"></script>
 	<script src="js/bundle.js"></script>
 </body>
 </html>
