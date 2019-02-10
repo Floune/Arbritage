@@ -17,7 +17,6 @@ $('#match').on('click', function() {
 	}, function(err, doc) {
 		if (err)
 			console.log(err);
-		console.log('nouveau nom d\'équipe: ', doc.equipeName);
 	});
 });
 

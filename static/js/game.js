@@ -72,7 +72,6 @@ let Game = {
 			}}, {multi: true}, function(err, numReplaced) {
 				if (err)
 					console.log(err);
-				console.log('ok');
 			});
 		});
 
@@ -109,7 +108,6 @@ let Game = {
 			equipe.remove({ }, { multi: true }, function (err, numRemoved) {
 				if (err)
 					console.log(err)
-				console.log('removed: ', numRemoved);
 				location.reload(true);
 			});
 			$("#histo").empty();
