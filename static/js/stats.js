@@ -10,6 +10,9 @@ let pmCnv = $("#pmChart").get(0);
 var zaCtx = zaCnv.getContext("2d");
 var ptCtx = ptCnv.getContext("2d");
 var pmCtx = pmCnv.getContext("2d");
+let za = new Chart(zaCtx, {});
+let pt = new Chart(ptCtx, {});
+let pm = new Chart(pmCtx, {});
 
 function fillStats(done) {
 	let stats = [];
@@ -24,7 +27,7 @@ function fillStats(done) {
 }
 
 function buildChart(stats, type, ctx, datas, label) {
-	var myChartPie = new Chart(ctx, {
+	myChart = new Chart(ctx, {
 		type: type,
 		data: {
 			labels: [
@@ -57,20 +60,29 @@ function buildChart(stats, type, ctx, datas, label) {
 			}
 		}
 	});
+	return (myChart);
 }
 
 function display(type) {
 	fillStats(function(stats) {
-		// for (i = 0; i < 6; i++) {
-		// 	$("#" + i ).append(stats[i]);
-		// }
-		buildChart(stats, type, zaCtx, [stats[0], stats[1]], "Accès à la zone d'attaque");
-		buildChart(stats, type, ptCtx, [stats[2], stats[3]], "Tir en position favorable");
-		buildChart(stats, type, pmCtx, [stats[4], stats[5]], "Panier marqué");
+		for (i = 0; i < 6; i++) {
+			$("#" + i ).append(stats[i]);
+		}
+		
+		if(za !== undefined || za !== null)
+			za.destroy();
+		if(pt !== undefined || pt !== null)
+			pt.destroy();
+		if(pm !== undefined || pm !== null)
+			pm.destroy();
+
+		za = buildChart(stats, type, zaCtx, [stats[0], stats[1]], "Accès à la zone d'attaque");
+		pt = buildChart(stats, type, ptCtx, [stats[2], stats[3]], "Tir en position favorable");
+		pm = buildChart(stats, type, pmCtx, [stats[4], stats[5]], "Panier marqué");
 	})
 }
 
-display("bar");
+display('bar');
 $(document).on("click", ".types", function() {
 	display($(this).attr("id"));
 })
