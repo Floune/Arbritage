@@ -39804,14 +39804,14 @@ let Datastore = require('nedb')
 
 $(".del").on('click', function() {
 	equipe.remove({}, { multi: true }, function (err, numRemoved) {
-		$(".tablo").empty();
-		alert('entrées supprimées: ', numRemoved);
+		$(".liist").empty();
 	});
 })
 
 $(document).on('click', '.see', function() {
 	let name = $(this).attr('id');
 	localStorage.setItem('equipe', name);
+	location.href='./stats.html';
 })
 
 function findH() {	
@@ -39819,7 +39819,7 @@ function findH() {
 		if (err)
 			console.log(err);
 		for (let x = 0; x < docs.length; x++) {
-			$(".tablo").append("<tr><td class='center aligned collapsing'> Equipe " + docs[x].equipeName + "</td><td class='center aligned collapsing'><form action='./stats.html'><button id='"+ docs[x].equipeName +"' class='ui icon button see'><i class='eye icon'></i></button></form></td></tr>");
+			$(".liist").append("<div class='ui segment'><button id='" + docs[x].equipeName + "' class='ui icon button see'><i class='eye icon'></i></button>Equipe  " + docs[x].equipeName + "</div>")
 		}
 	});
 }

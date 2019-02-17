@@ -5,8 +5,11 @@ body {
 	align-items: center;
 }
 
+.titre {
+	margin-bottom: 10px;
+}
+
 .boutons {
 	margin-bottom: 6px;
 }
-
 
