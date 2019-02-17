@@ -26,10 +26,6 @@ ul {
 	margin-bottom: 4px;
 }
 
-.actionButtons {
-	margin-bottom: 4px;
-}
-
 #zaChart {
 	margin-bottom: 4px;
 }
@@ -40,4 +36,8 @@ ul {
 
 #pmChart {
 	margin-bottom: 4px;
+}
+
+.listStats {
+	margin-bottom: 6px;
 }

@@ -39864,10 +39864,13 @@ function buildChart(stats, type, ctx, datas, label) {
 
 function display(type) {
 	fillStats(function(stats) {
+		$("#timName").html(team);
+		$("#played").html(stats[6])
 		for (i = 0; i < 6; i++) {
-			$("#" + i ).append(stats[i]);
+			$("#sp" + i ).empty();
+			$("#sp" + i ).append(stats[i]);
 		}
-		
+
 		if(za !== undefined || za !== null)
 			za.destroy();
 		if(pt !== undefined || pt !== null)
