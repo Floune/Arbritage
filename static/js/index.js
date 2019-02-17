@@ -20,18 +20,4 @@ $('#match').on('click', function() {
 	});
 });
 
-$("#historique").on('click', function() {
-	$("#histo").empty();
 
-	equipe.find({}, {_id: 0}, function(err, docs) {
-		if (err)
-			console.log(err);
-		for (let doc in docs) {
-			for (let key in docs[doc]) {
-				$("#histo").append("<li>" + key + ": " +docs[doc][key] + "</li>");
-			}
-			$("#histo").append("<br>");
-		}
-	});
-
-});

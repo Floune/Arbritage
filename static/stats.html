@@ -12,71 +12,74 @@
 
 	<div class="listStats">
 		<h1 id="teame">Equipe: <span id="timName"></span></h1>
-	<i class="clock outline icon"></i> 
-	Temps de match: <span id="played"></span>
-	<table class="ui table">
+		<i class="clock outline icon"></i> 
+		Temps de match: <span id="played"></span>
+		<table class="ui table">
 
 
-		<tbody>
-			<tr class="negative">
-				<td class="center aligned collapsing">
-					Sortie zone d'attaque: <span id="sp0"></span>
-				</td>
-			</tr>
-			<tr class="positive">
-				<td class="center aligned collapsing">
-					Accès zone d'attaque: <span id="sp1"></span>
-				</td>	
-			</tr>
-			<tr class="negative">
-				<td class="center aligned collapsing">
-					Tir position défavorable: <span id="sp2"></span>
-				</td>
-			</tr>
-			<tr class="positive">
-				<td class="center aligned collapsing">
-					Tir position favorable: <span id="sp3"></span>
-				</td>	
-			</tr>
-			<tr class="negative">
-				<td class="center aligned collapsing">
-					Panier non marqué: <span id="sp4"></span>
-				</td>
-			</tr>
-			<tr class="positive">
-				<td class="center aligned collapsing">
-					Panier marqué: <span id="sp5"></span>
-				</td>	
-			</tr>
-		</tbody>
-	</table>
-</div>
+			<tbody>
+				<tr class="negative">
+					<td class="center aligned collapsing">
+						Sortie zone d'attaque: <span id="sp0"></span>
+					</td>
+				</tr>
+				<tr class="positive">
+					<td class="center aligned collapsing">
+						Accès zone d'attaque: <span id="sp1"></span>
+					</td>	
+				</tr>
+				<tr class="negative">
+					<td class="center aligned collapsing">
+						Tir position défavorable: <span id="sp2"></span>
+					</td>
+				</tr>
+				<tr class="positive">
+					<td class="center aligned collapsing">
+						Tir position favorable: <span id="sp3"></span>
+					</td>	
+				</tr>
+				<tr class="negative">
+					<td class="center aligned collapsing">
+						Panier non marqué: <span id="sp4"></span>
+					</td>
+				</tr>
+				<tr class="positive">
+					<td class="center aligned collapsing">
+						Panier marqué: <span id="sp5"></span>
+					</td>	
+				</tr>
+			</tbody>
+		</table>
+	</div>
 
-<div class="actionButtons">
-	<button class="ui blue small button types" id="pie">Camembert</button>
-	<button class="ui blue small button types" id="bar">Barres</button>
-</div>
+	<div class="actionButtons">
+		<button class="ui blue small button types" id="pie">Camembert</button>
+		<button class="ui blue small button types" id="bar">Barres</button>
+	</div>
 
-<h2>Accès à la zone d'attaque</h2>
-<canvas id="zaChart"></canvas>
-<h2>Tir en position favorable</h2>
-<canvas id="ptChart"></canvas>
-<h2>Panier marqué</h2>
-<canvas id="pmChart"></canvas>
+	<h2>Accès à la zone d'attaque</h2>
+	<canvas id="zaChart"></canvas>
+	<h2>Tir en position favorable</h2>
+	<canvas id="ptChart"></canvas>
+	<h2>Panier marqué</h2>
+	<canvas id="pmChart"></canvas>
 
-<form action="./index.html" id="retour">
-	<button class="ui blue large button" id="end">Nouveau Match</button>
-</form>
+	<form action="./index.html" id="retour">
+		<button class="ui blue large button" id="end">Nouveau Match</button>
+	</form>
+	<form action="./historique.html">
+		<button class="ui green large button" id="end">Historique</button>
+	</form>
 
-<audio id="audio" src="./buz.mp3" autoplay="true"></audio>
-<script
-src="https://code.jquery.com/jquery-3.1.1.min.js"
-integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
-crossorigin="anonymous"></script>
-<script src="./semantic/dist/semantic.min.js"></script>
-<script src="js/bundleStats.js"></script>
-<script>
+	<audio id="audio" src="./buz.mp3" autoplay="true"></audio>
+	<script
+	src="https://code.jquery.com/jquery-3.1.1.min.js"
+	integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+	crossorigin="anonymous"></script>
+	<script src="./semantic/dist/semantic.min.js"></script>
+	<script src="js/bundleStats.js"></script>
+	<script>
 
-</script>
+	</script>
 </body>
 </html>
