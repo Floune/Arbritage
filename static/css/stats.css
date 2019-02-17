@@ -3,7 +3,6 @@ body {
 	justify-content: top;
 	flex-direction: column;
 	align-items: center;
-	background-color: rgb(113, 170, 179);
 }
 
 #teame {
@@ -24,5 +23,21 @@ ul {
 
 .lis {
 	font-size: 25px;
+	margin-bottom: 4px;
+}
+
+.actionButtons {
+	margin-bottom: 4px;
+}
+
+#zaChart {
+	margin-bottom: 4px;
+}
+
+#ptChart {
+	margin-bottom: 4px;
+}
+
+#pmChart {
 	margin-bottom: 4px;
 }
