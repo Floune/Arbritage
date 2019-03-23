@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Basket</title>
+  <link rel="manifest" href="./manifest.json">
   <link rel="icon" href="favicon.ico" />
   <link rel="stylesheet" type="text/css" href="./semantic/dist/semantic.min.css">
   <link rel="stylesheet" type="text/css" href="./css/main.css">
@@ -24,7 +25,7 @@
 
     <div class="begin">
       <form action="./game.html">  
-        <button class="ui teal massive button" id="match">
+        <button class="ui green massive button" id="match">
           Commencer le match
         </button>
       </form>
@@ -34,8 +35,7 @@
       <form action="./historique.html">
         <button class="ui blue large button" id="historique">Voir historique</button>
       </form>
-<!--       <button class="ui violet large button" id="videstorique">Vider l'historique ;)</button>
-      <button id="quitter">Quitter</button> -->
+      <button class="ui violet large button" id="install">Installer</button>
     </div>
 
 
@@ -49,5 +49,30 @@
 </script>
 <script src="./semantic/dist/semantic.min.js"></script>
 <script src="js/bundle.js"></script>
+
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+      navigator.serviceWorker.register('./sw.js').then(function(registration) {
+      // Registration was successful
+      console.log('ServiceWorker registration successful with scope: ', registration.scope);
+    }, function(err) {
+      // registration failed :(
+      console.log('ServiceWorker registration failed: ', err);
+    });
+    });
+  }
+</script>
+<script>
+  let deferredPrompt;
+  let btnAdd = $("#install");
+  window.addEventListener('beforeinstallprompt', (e) => {
+  // Prevent Chrome 67 and earlier from automatically showing the prompt
+  // Stash the event so it can be triggered later.
+  deferredPrompt = e;
+  deferredPrompt.prompt();
+  }); 
+ 
+</script>
 </body>
 </html>
